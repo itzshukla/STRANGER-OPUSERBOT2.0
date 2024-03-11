@@ -61,7 +61,7 @@ USERBOT_PICTURE = getenv("USERBOT_PICTURE", "https://telegra.ph/file/7a2e0a67e16
 
 # Don't Edit This Codes From This Line
 
-LOGGER = logging.getLogger("SHASHANK")
+LOGGER = logging.getLogger("main")
 runtime = time.time()
 
 FLOODXD = {}
