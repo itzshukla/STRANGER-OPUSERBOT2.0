@@ -2,7 +2,7 @@ from pyrogram import *
 from pyrogram.types import *
 from ... import app, SUDO_USER
 from ... import *
-from SHUKLA.modules.bad.basic import edit_or_reply, get_text
+from SHUKLA.modules.SHASHANK.basic import edit_or_reply, get_text
 
 
 rtext = [
