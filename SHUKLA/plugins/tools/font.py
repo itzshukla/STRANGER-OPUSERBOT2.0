@@ -1,7 +1,7 @@
 from pyrogram import  filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from SHUKLA.modules.SHASHANK.badfont import Fonts
+from SHUKLA.modules.SHASHANK.shuklafont import Fonts
 from ... import *
 
 @app.on_message(cdz(["font"]) & filters.me)
