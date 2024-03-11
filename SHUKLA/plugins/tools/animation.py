@@ -10,7 +10,7 @@ from pyrogram.types import Message
 
 from ... import *
 from SHUKLA.modules.SHASHANK.basic import edit_or_reply, get_text
-from SHUKLA.modules.SHUKLA.constants import MEMES
+from SHUKLA.modules.SHASHANK.constants import MEMES
 
 
 
