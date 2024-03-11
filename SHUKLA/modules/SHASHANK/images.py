@@ -67,7 +67,7 @@ def generate_alive_image(
 
     img = img_rounded.rotate(-45, expand=True)
 
-    background = Image.open("./Shuklabot/resources/images/Shuklabot_alive.png").convert(
+    background = Image.open("./SHUKLA/resources/images/Shuklabot_alive.png").convert(
         "RGBA"
     )
 
@@ -214,7 +214,7 @@ async def draw_meme(
 
     draw = ImageDraw.Draw(image)
     font_size = int((30 / 500) * width)
-    font = ImageFont.truetype("./PbxTeam/resource/fonts/Montserrat.ttf", font_size)
+    font = ImageFont.truetype("./SHUKLA/resource/fonts/Montserrat.ttf", font_size)
 
     curr_height, padding = 20, 5
     for utext in textwrap.wrap(upper_text, 25):
@@ -295,7 +295,7 @@ async def create_calendar(year: int, month: int) -> str:
     calendar_image = create_gradient((500, 500), (140, 200, 250), (0, 150, 200))
     draw = ImageDraw.Draw(calendar_image)
 
-    month_font = ImageFont.truetype("./PbxTeam/resource/fonts/Montserrat.ttf", 40)
+    month_font = ImageFont.truetype("./SHUKLA/resource/fonts/Montserrat.ttf", 40)
     month_x = (
         calendar_image.width - draw.textlength(f"{month_name} {year}", month_font)
     ) // 2
@@ -309,7 +309,7 @@ async def create_calendar(year: int, month: int) -> str:
         stroke_fill=(255, 40, 40),
     )
 
-    week_font = ImageFont.truetype("./PbxTeam/resource/fonts/Montserrat.ttf", 1)
+    week_font = ImageFont.truetype("./SHUKLA/resource/fonts/Montserrat.ttf", 1)
     weekdays_text = "   ".join([day[:3] for day in calendar.day_name])
     textsize = draw.textlength(weekdays_text, week_font)
     draw.text(
@@ -325,7 +325,7 @@ async def create_calendar(year: int, month: int) -> str:
     cell_size = 30
     padding = 15
 
-    font = ImageFont.truetype("./PbxTeam/resource/fonts/Montserrat.ttf", 1)
+    font = ImageFont.truetype("./SHUKLA/resource/fonts/Montserrat.ttf", 1)
 
     for week_num, week in enumerate(cal):
         for day_num, day in enumerate(week):
