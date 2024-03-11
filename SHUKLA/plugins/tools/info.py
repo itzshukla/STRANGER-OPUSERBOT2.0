@@ -6,7 +6,7 @@ from pyrogram.enums import ChatType
 from pyrogram.types import Message
 from ... import *
 from SHUKLA.modules.SHASHANK.PyroHelpers import ReplyCheck
-from PbxTeam.plugins.tools.profile import extract_user
+from SHUKLA.plugins.tools.profile import extract_user
 
 
 
