@@ -68,7 +68,7 @@ def inline_wrapper(func):
                     [
                         InlineKeyboardButton(
                             "💥 Deploy Shukla Userbot ✨",
-                            url=f"https://github.com/Badhacker98/Pbx_TeamBot"
+                            url=f"https://github.com/itzshukla/STRANGER-OPUSERBOT2.0"
                         )
                     ]
                 ]
@@ -78,11 +78,11 @@ def inline_wrapper(func):
                     results=[
                         (
                             InlineQueryResultPhoto(
-                                photo_url=f"https://telegra.ph/file/3063af27d9cc8580845e1.jpg",
-                                title="🥀 Pbx Userbot ✨",
-                                thumb_url=f"https://telegra.ph/file/3063af27d9cc8580845e1.jpg",
+                                photo_url=f"https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg",
+                                title="🥀 Shukla Userbot ✨",
+                                thumb_url=f"https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg",
                                 description=f"🌷 Deploy Your Own SHUKLAUSERBOT🌿...",
-                                caption=f"<b>🥀 Welcome » To » Pbx 🌷\n✅ Userbot {__version__} ✨...</b>",
+                                caption=f"<b>🥀 Welcome » To » Shukla 🌷\n✅ Userbot {__version__} ✨...</b>",
                                 reply_markup=InlineKeyboardMarkup(button),
                             )
                         )
@@ -98,7 +98,7 @@ def inline_wrapper(func):
                             InlineQueryResultArticle(
                                 title="",
                                 input_message_content=InputTextMessageContent(
-                                    f"||**🥀 Please, Deploy Your Own Shukla Userbot❗...\n\nRepo:** <i>https://github.com/Badhacker98/Pbx_TeamBot/</i>||"
+                                    f"||**🥀 Please, Deploy Your Own Shukla Userbot❗...\n\nRepo:** <i>https://github.com/itzshukla/STRANGER-OPUSERBOT2.0/</i>||"
                                 ),
                             )
                         )
