@@ -113,7 +113,7 @@ async def run_async_clients():
     except:
         pass
     try:
-        await app.join_chat("MASTIWITHFRIENDSX")
+        await app.join_chat("MASTIWITHFRIENDSXD")
         await app.join_chat("SHIVANSH474")
     except:
         pass
@@ -126,7 +126,7 @@ async def run_async_clients():
         except:
             pass
         try:
-            await app.join_chat("MASTIWITHFRIENDSX")
+            await app.join_chat("MASTIWITHFRIENDSXD")
             await app.join_chat("SHIVANSH474")
         except:
             pass
