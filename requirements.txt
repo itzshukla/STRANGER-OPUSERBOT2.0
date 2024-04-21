@@ -1,4 +1,4 @@
-asyncio==3.4.3
+asyncio
 motor==3.3.2
 pyrogram==2.0.106
 python-dotenv==1.0.1
