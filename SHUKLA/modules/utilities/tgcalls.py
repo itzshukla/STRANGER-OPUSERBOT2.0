@@ -2,8 +2,6 @@ from pytgcalls.types import Update
 
 from . import queues
 from ..clients.clients import app, call
-from .streams import run_stream, close_stream
-
 
 async def run_async_calls():
     @call.on_left()
