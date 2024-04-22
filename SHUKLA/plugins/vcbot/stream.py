@@ -5,7 +5,6 @@ from pytgcalls.exceptions import GroupCallNotFound
 from ... import *
 from ...modules.mongo.streams import *
 from ...modules.utilities import queues
-from ...modules.utilities.streams import *
 
 
 
