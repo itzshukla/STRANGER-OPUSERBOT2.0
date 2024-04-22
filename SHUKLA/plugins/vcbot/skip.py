@@ -6,7 +6,6 @@ from ... import app, eor, cdx, cdz
 from ...modules.helpers.wrapper import *
 from ...modules.mongo.streams import *
 from ...modules.utilities import queues
-from ...modules.utilities.streams import *
 
 
 @app.on_message(cdx(["skp", "skip"]) & ~filters.private)
