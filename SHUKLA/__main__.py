@@ -7,7 +7,6 @@ from .plugins import ALL_PLUGINS
 from .modules.clients.clients import run_async_clients
 from .modules.clients.enums import run_async_enums
 from .modules.helpers.inline import run_async_inline
-from .modules.utilities.tgcalls import run_async_calls
 
 
 async def main():
