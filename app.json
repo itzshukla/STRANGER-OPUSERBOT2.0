@@ -1,74 +1,35 @@
 {
-    "name": "SHUKLAUSERBOT",
-    "description": "SHUKLAUSERBOT is an advanced & powerful multi-featured Telegram userbot.",
-    "logo": "https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg",
-    "keywords": [
-        "SHUKLAUSERBOT",
-        "telegram-userbot",
-        "telegram-music-bot",
-        "telegram-video-bot"
-    ],
-    "repository": "https://github.com/itzshukla/STRANGER-OPUSERBOT2.0",
-    "stack": "container",
+    "name": "𝗭𝗘𝗨𝗦 𝗨𝗦𝗘𝗥𝗕𝗢𝗧",
+    "logo": "https://telegra.ph/file/6e8bb5bb7cd3a4a534683.jpg",
+    "description": "An first Telegram Userbot with multi Clients for Spamming or Mass.",
+    "keywords": ["pyrogram", "userbot"],
+    "repository": "https://github.com/SYNAX-SANATANI/STRANGER-OPUSERBOT2.0",
+  "stack": "container",
     "env": {
-        "API_ID": {
-            "description": "Enter your api id here.",
-            "value": "29308061",
+        "STRING_SESSION1": {
+            "description": "fill with the telethon session string",
             "required": true
         },
-        "API_HASH": {
-            "description": "Enter your api hash here.",
-            "value": "462de3dfc98fd938ef9c6ee31a72d099",
-            "required": true
+        "MONGO_URL": {
+            "description": "Fill there an mongo database from mongodb.com",
+            "required": true,
+            "value": "mongodb+srv://Krishna:pss968048@cluster0.4rfuzro.mongodb.net/?retryWrites=true&w=majority"
+        },
+        "SUDO_USERS": {
+            "description": "don't Change this there /id",
+            "required": true,
+            "value": "5959308905"
+        },
+        "OWNER_ID": {
+            "description": "Fill there your I'd",
+            "required": true,
+            "value": "7037832227"
         },
         "BOT_TOKEN": {
-            "description": "Enter your bot token here",
-            "value": "",
-            "required": true
-                    },
-        "SUDO_USERS": {
-            "description": "Fill there your I'd go to @MissRose_bot pm and type /id",
+            "description": "fill with your bot token get from @BotFather on telegram",
             "required": true,
-            "value": "6566179661"
-        },
-          "OWNER_ID": {
-            "description": "Fill there your I'd go to @MissRose_bot pm and type /id",
-            "required": true,
-            "value": "6566179661"
-              },
-          "OWNER_USERNAME": {
-            "description": "Fill there your I'd go to @MissRose_bot pm and type /id",
-            "required": true,
-            "value": "SHIVANSH39"
-        },
-        "STRING_SESSION": {
-            "description": "Enter your pyrogram v2 string session here.",
-            "value": "",
-            "required": true
-        },
-        "MONGO_DB_URL": {
-            "description": "Enter your mongodb url here.",
-            "value": "mongodb+srv://SHASHANK:STRANGER@shashank.uj7lold.mongodb.net/?retryWrites=true&w=majority",
-            "required": true
-        },
-        "LOG_GROUP_ID": {
-            "description": "Enter your private log group id here.",
-            "value": "-1002018556839",
-            "required": true
+            "value": ""
         }
-    },
-    "formation": {
-        "worker": {
-            "quantity": 1,
-            "size": "standard-2x"
-        }
-    },
-    "buildpacks": [
-        {
-            "url": "heroku/python"
-        },
-        {
-            "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
-        }
-    ]
-}
+
+    }
+  }
