@@ -37,7 +37,7 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", 0))
 OWNER_ID = int(getenv("OWNER_ID", "6762113050"))
 OWNER_USERNAME = getenv("OWNER_USERNAME", None)
 SUDO_USERS = list(map(int, getenv("SUDO_USERS", "6919199044").split()))
-ALIVE_PIC = getenv("ALIVE_PIC", "https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg")
+ALIVE_PIC = getenv("ALIVE_PIC", "https://files.catbox.moe/uufiry.jpg")
 
 
 # OPTIONAL VARIABLES
@@ -55,7 +55,7 @@ PM_GUARD_LIMIT = int(getenv("PM_GUARD_LIMIT", 5))
 
 
 # USERBOT DEFAULT IMAGE
-USERBOT_PICTURE = getenv("USERBOT_PICTURE", "https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg")
+USERBOT_PICTURE = getenv("USERBOT_PICTURE", "https://files.catbox.moe/r58nec.jpg")
 
 
 
