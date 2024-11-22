@@ -1,4 +1,4 @@
-<p align="center"><a href="https://t.me/PyXen"><img src="https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg" width="400"></a></p>
+<p align="center"><a href="https://t.me/PyXen"><img src="https://files.catbox.moe/uufiry.jpg" width="400"></a></p>
 </p>
 <h6 align="center">
   <b>• sᴛʀᴀɴɢᴇʀ ᴜsᴇʀ ʙᴏᴛ •</b>
