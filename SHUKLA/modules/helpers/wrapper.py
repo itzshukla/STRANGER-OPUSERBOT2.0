@@ -78,9 +78,9 @@ def inline_wrapper(func):
                     results=[
                         (
                             InlineQueryResultPhoto(
-                                photo_url=f"https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg",
+                                photo_url=f"https://files.catbox.moe/r58nec.jpg",
                                 title="🥀 Shukla Userbot ✨",
-                                thumb_url=f"https://telegra.ph/file/7a2e0a67e160deb60e48b.jpg",
+                                thumb_url=f"https://files.catbox.moe/r58nec.jpg",
                                 description=f"🌷 Deploy Your Own SHUKLAUSERBOT🌿...",
                                 caption=f"<b>🥀 Welcome » To » Shukla 🌷\n✅ Userbot {__version__} ✨...</b>",
                                 reply_markup=InlineKeyboardMarkup(button),
