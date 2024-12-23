@@ -5,7 +5,7 @@ from pytgcalls import PyTgCalls
 from pytgcalls.exceptions import GroupCallNotFound
 from ...modules.mongo.streams import *
 from ...modules.utilities import queues
-from pytgcalls.types import GroupCall
+#from pytgcalls.types import GroupCall
 
 from ... import bot, app, call
 
