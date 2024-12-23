@@ -2,7 +2,6 @@ asyncio==3.4.3
 motor
 pymongo
 python-dotenv==1.0.1
-py-tgcalls==2.0.1
 tgcrypto==1.2.5
 telegraph
 pillow==9.5.0
@@ -28,3 +27,5 @@ youtube-search
 youtube-search-python
 git+https://github.com/KurimuzonAkuma/pyrogram
 git+https://github.com/yt-dlp/yt-dlp
+ntgcalls==1.3.0b3
+py-tgcalls==2.1.0.dev2
