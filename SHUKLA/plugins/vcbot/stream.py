@@ -1,7 +1,7 @@
 import yt_dlp as ytdl
 from pyrogram import Client, filters
 from pytgcalls import PyTgCalls
-from pytgcalls.types import AudioPiped, VideoPiped
+#from pytgcalls.types import AudioPiped, VideoPiped
 from pytgcalls.exceptions import GroupCallNotFound
 from ...modules.mongo.streams import *
 from ...modules.utilities import queues
