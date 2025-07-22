@@ -6,7 +6,7 @@ from ...console import USERBOT_PICTURE
 
 from asyncio.queues import QueueEmpty
 from pytgcalls.types import *
-from pytgcalls.types.input_stream import *
+from pytgcalls.types.stream import *
 from youtubesearchpython.__future__ import VideosSearch
 
 
@@ -37,7 +37,6 @@ async def get_stream(link, type):
             "quiet": True,
             "no_warnings": True,
         }
-
     elif type == "Video":
         ydl_opts = {
             "format": "(bestvideo[height<=?720][width<=?1280][ext=mp4])+(bestaudio[ext=m4a])",
@@ -50,9 +49,7 @@ async def get_stream(link, type):
 
     x = yt_dlp.YoutubeDL(ydl_opts)
     info = x.extract_info(link, False)
-    file = os.path.join(
-        "downloads", f"{info['id']}.{info['ext']}"
-    )
+    file = os.path.join("downloads", f"{info['id']}.{info['ext']}")
     if os.path.exists(file):
         return file
     await run_async(x.download, [link])
@@ -62,37 +59,36 @@ async def get_stream(link, type):
 async def run_stream(file, type):
     if type == "Audio":
         audio_stream = AudioStream(
-            input_mode=InputMode.Shell,
-            path=f"ffmpeg -i {file} -f s16le -ac 2 -ar 48k pipe:1",
-            parameters=AudioParameters(
+            file_path=file,
+            audio_parameters=AudioParameters(
                 bitrate=48000,
                 channels=2,
             ),
+            stream_type=StreamType().local_stream,
         )
         stream = Stream(audio_stream)
 
     elif type == "Video":
         audio_stream = AudioStream(
-            input_mode=InputMode.Shell,
-            path=f"ffmpeg -i {file} -f s16le -ac 2 -ar 48k pipe:1",
-            parameters=AudioParameters(
+            file_path=file,
+            audio_parameters=AudioParameters(
                 bitrate=48000,
                 channels=2,
             ),
+            stream_type=StreamType().local_stream,
         )
         video_stream = VideoStream(
-            input_mode=InputMode.Shell,
-            path=f"ffmpeg -i {file} -f rawvideo -r 30 -pix_fmt yuv420p -vf scale=1280:720 pipe:1",
-            parameters=VideoParameters(
+            file_path=file,
+            video_parameters=VideoParameters(
                 width=1280,
                 height=720,
                 frame_rate=30,
             ),
+            stream_type=StreamType().local_stream,
         )
         stream = Stream(audio_stream, video_stream)
 
     return stream
-
 
 
 async def close_stream(chat_id):
