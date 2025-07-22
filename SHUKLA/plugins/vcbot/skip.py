@@ -1,10 +1,10 @@
 from pyrogram import filters
-from pytgcalls.exceptions import GroupCallNotFoundError
 from ... import app, eor, cdx, cdz, call
 from ...modules.helpers.wrapper import sudo_users_only
 from ...modules.mongo.streams import get_chat_id
 from ...modules.utilities import queues
 from ...modules.utilities.streams import run_stream
+
 
 @app.on_message(cdx(["skp", "skip"]) & ~filters.private)
 @sudo_users_only
@@ -26,11 +26,11 @@ async def skip_stream(client, message):
         await call.change_stream(chat_id, stream)
         return await eor(message, "**Stream Skipped!**")
 
-    except GroupCallNotFoundError:
-        return await eor(message, "**I am Not in VC!**")
     except Exception as e:
+        if "GroupCall" in str(e):
+            return await eor(message, "**I am Not in VC!**")
         print(f"Skip error: {e}")
-        await eor(message, "**❌ Failed to skip track!**")
+        return await eor(message, "**❌ Failed to skip track!**")
 
 
 @app.on_message(cdz(["cskp", "cskip"]) & ~filters.private)
@@ -57,8 +57,8 @@ async def skip_stream_custom(client, message):
         await call.change_stream(chat_id, stream)
         return await eor(message, "**Stream Skipped!**")
 
-    except GroupCallNotFoundError:
-        return await eor(message, "**I am Not in VC!**")
     except Exception as e:
+        if "GroupCall" in str(e):
+            return await eor(message, "**I am Not in VC!**")
         print(f"Skip error: {e}")
-        await eor(message, "**❌ Failed to skip track!**")
+        return await eor(message, "**❌ Failed to skip track!**")
