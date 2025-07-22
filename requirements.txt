@@ -6,12 +6,11 @@ tgcrypto==1.2.5
 telegraph
 pillow==9.5.0
 Unidecode
-aiohttp
+aiohttp==3.9.4
 gtts
 wget
 pyfiglet
 pydub
-aiohttp==3.9.4
 pymediainfo
 opencv-python-headless
 gpytranslate
