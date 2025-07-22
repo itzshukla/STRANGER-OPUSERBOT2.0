@@ -1,16 +1,18 @@
-import asyncio, importlib
-
+import asyncio
+import importlib
 from pytgcalls import idle
-
-from . import logs, plugs, vars
+from . import PLUGINS as plugs
+from . import log as logs
 from .plugins import ALL_PLUGINS
-from .modules.clients.clients import run_async_clients
+from . import shukla as run_async_clients
 from .modules.clients.enums import run_async_enums
 from .modules.helpers.inline import run_async_inline
 
+loop = asyncio.get_event_loop()
 
 async def main():
-    await run_async_clients()
+    # Call the start method of the Shukla instance
+    await run_async_clients.start()
     for all_plugin in ALL_PLUGINS:
         imported_plugin = importlib.import_module(
             "SHUKLA.plugins" + all_plugin
