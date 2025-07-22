@@ -25,6 +25,6 @@ youtube-search-python
 ntgcalls==2.0.4
 py-tgcalls==2.2.3
 git+https://github.com/yt-dlp/yt-dlp
-git+https://github.com/pytgcalls/pytgcalls@v2.0.0
+#git+https://github.com/pytgcalls/pytgcalls@v2.0.0
 git+https://gitlab.com/Badmunda98/PyroB
 git+https://gitlab.com/Badmunda98/py-googletrans
