@@ -1,25 +1,16 @@
-FROM ubuntu:22.04
+FROM nikolaik/python-nodejs:python3.10-nodejs19
 
-# Set non-interactive frontend for apt
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install dependencies including Node.js (v16+), Python3, FFmpeg
-RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends \
-    curl ffmpeg git python3 python3-pip python3-venv ca-certificates gnupg && \
-    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get install -y nodejs && \
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i '/security.debian.org/d' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg aria2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
+COPY . /app/
+WORKDIR /app/
 
-# Copy project files
-COPY . .
+RUN python -m pip install --no-cache-dir --upgrade pip
+RUN pip3 install --no-cache-dir --upgrade --requirement requirements.txt
 
-# Install Python dependencies
-RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
-
-# Default command to run the bot
 CMD ["python3", "-m", "SHUKLA"]
