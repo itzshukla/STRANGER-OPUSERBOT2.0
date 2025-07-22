@@ -14,6 +14,7 @@ pydub
 aiohttp==3.9.4
 pymediainfo
 opencv-python-headless
+gpytranslate
 bs4
 humanize
 aiofiles
