@@ -1,10 +1,9 @@
 import asyncio
 import importlib
 from pytgcalls import idle
-from . import PLUGINS as plugs
-from . import log as logs
+from . import logs, plugs, vars
 from .plugins import ALL_PLUGINS
-from . import shukla as run_async_clients
+from .modules.clients.clients import run_async_clients
 from .modules.clients.enums import run_async_enums
 from .modules.helpers.inline import run_async_inline
 
