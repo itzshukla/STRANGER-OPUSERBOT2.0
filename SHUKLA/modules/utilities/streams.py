@@ -7,12 +7,12 @@ from ..clients.clients import call
 from ...console import USERBOT_PICTURE
 
 from asyncio.queues import QueueEmpty
-from pytgcalls.types import Stream
+from pytgcalls.types.stream import Stream
 from pytgcalls.types.input_stream import (
     AudioStream,
-    VideoStream,
     AudioParameters,
-    VideoParameters
+    VideoStream,
+    VideoParameters,
 )
 from youtubesearchpython.__future__ import VideosSearch
 
