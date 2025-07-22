@@ -9,50 +9,50 @@
     "telegram-video-bot"
   ],
   "repository": "https://github.com/itzshukla/STRANGER-OPUSERBOT2.0",
-  "stack": "container",
+  "stack": "heroku-22",
   "env": {
     "API_ID": {
-      "description": "Enter your api id here.",
+      "description": "Enter your API ID from https://my.telegram.org",
       "value": "29308061",
       "required": true
     },
     "API_HASH": {
-      "description": "Enter your api hash here.",
+      "description": "Enter your API HASH from https://my.telegram.org",
       "value": "462de3dfc98fd938ef9c6ee31a72d099",
       "required": true
     },
     "BOT_TOKEN": {
-      "description": "Enter your bot token here",
+      "description": "Enter your bot token from BotFather",
       "value": "",
       "required": true
     },
     "SUDO_USERS": {
-      "description": "Fill there your ID. Go to @MissRose_bot PM and type /id",
-      "required": true,
-      "value": "6566179661"
+      "description": "Telegram user ID(s) who have full access",
+      "value": "6566179661",
+      "required": true
     },
     "OWNER_ID": {
-      "description": "Fill there your ID. Go to @MissRose_bot PM and type /id",
-      "required": true,
-      "value": "6566179661"
+      "description": "Your Telegram user ID",
+      "value": "6566179661",
+      "required": true
     },
     "OWNER_USERNAME": {
       "description": "Your Telegram username",
-      "required": true,
-      "value": "SHIVANSH39"
+      "value": "SHIVANSH39",
+      "required": true
     },
     "STRING_SESSION": {
-      "description": "Enter your Pyrogram v2 string session here.",
+      "description": "Your Pyrogram v2 string session",
       "value": "",
       "required": true
     },
     "MONGO_DB_URL": {
-      "description": "Enter your MongoDB URL here.",
+      "description": "MongoDB connection string",
       "value": "mongodb+srv://SHASHANK:STRANGER@shashank.uj7lold.mongodb.net/?retryWrites=true&w=majority",
       "required": true
     },
     "LOG_GROUP_ID": {
-      "description": "Enter your private log group ID here.",
+      "description": "Your private log group ID",
       "value": "-1002018556839",
       "required": true
     }
