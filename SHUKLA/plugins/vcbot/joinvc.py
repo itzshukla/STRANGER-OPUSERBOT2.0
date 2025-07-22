@@ -8,7 +8,9 @@ from ...modules.helpers.wrapper import sudo_users_only
 @sudo_users_only
 async def join_vc(client, message):
     chat_id = message.chat.id
-    if call.is_running(chat_id):
+
+    active_calls = call._call._calls  # INTERNAL: check active call dict
+    if chat_id in active_calls:
         return await eor(message, "**✅ Already joined VC!**")
 
     try:
@@ -28,7 +30,8 @@ async def join_vc_chat(client, message):
     if chat_id == 0:
         return await eor(message, "**🥀 No Stream Chat Set❗**")
 
-    if call.is_running(chat_id):
+    active_calls = call._call._calls
+    if chat_id in active_calls:
         return await eor(message, "**✅ Already joined VC!**")
 
     try:
