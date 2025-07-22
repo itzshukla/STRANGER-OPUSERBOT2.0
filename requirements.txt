@@ -23,7 +23,7 @@ sqlalchemy==1.3.23
 SafoneAPI
 youtube-search
 youtube-search-python
-py-tgcalls==0.9.7
+pytgcalls==2.2.5
 git+https://github.com/yt-dlp/yt-dlp
 git+https://gitlab.com/Badmunda98/PyroB
 git+https://gitlab.com/Badmunda98/py-googletrans
