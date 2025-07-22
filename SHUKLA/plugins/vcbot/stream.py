@@ -1,5 +1,4 @@
 from pyrogram import filters
-from pytgcalls.exceptions import GroupCallNotFound
 
 from ... import app, eor, cdx, cdz, call
 from ...modules.helpers.wrapper import sudo_users_only
