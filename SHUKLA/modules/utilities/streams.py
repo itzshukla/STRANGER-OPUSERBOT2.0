@@ -5,7 +5,6 @@ from ..clients.clients import call
 from ...console import USERBOT_PICTURE
 
 from asyncio.queues import QueueEmpty
-from ntgcalls import InputMode
 from pytgcalls.types import *
 from pytgcalls.types.input_stream import *
 from youtubesearchpython.__future__ import VideosSearch
