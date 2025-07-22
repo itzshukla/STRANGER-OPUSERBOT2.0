@@ -23,6 +23,7 @@ SafoneAPI
 youtube-search
 youtube-search-python
 pytgcalls==2.1.0.dev2
+ntgcalls
 git+https://github.com/yt-dlp/yt-dlp
 git+https://gitlab.com/Badmunda98/PyroB
 git+https://gitlab.com/Badmunda98/py-googletrans
