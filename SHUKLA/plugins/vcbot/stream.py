@@ -1,10 +1,12 @@
 from pyrogram import filters
+from pytgcalls.types import StreamType
 
 from ... import app, eor, cdx, cdz, call
 from ...modules.helpers.wrapper import sudo_users_only
 from ...modules.mongo.streams import get_chat_id
 from ...modules.utilities import queues
 from ...modules.utilities.streams import run_stream, get_stream, get_result
+import os
 
 
 # Handle query parsing
@@ -16,18 +18,32 @@ def extract_query(text):
 
 # Common player function
 async def play_file(chat_id, file, stream_type, aux):
-    if not call.is_running(chat_id):
-        stream = await run_stream(file, stream_type)
-        await call.join_group_call(chat_id, stream)
-        return await aux.edit("🎧 Playing!")
+    try:
+        if not os.path.exists(file):
+            return await aux.edit("❌ File not found after download.")
 
-    if queues.is_empty(chat_id):
         stream = await run_stream(file, stream_type)
-        await call.change_stream(chat_id, stream)
-        return await aux.edit("🎧 Playing!")
-    else:
-        position = await queues.put(chat_id, file=file, type=stream_type)
-        return await aux.edit(f"🎶 Queued at position {position}")
+        if not stream:
+            return await aux.edit("❌ Could not generate stream.")
+
+        # Check if already in VC
+        if chat_id not in call._call._calls:
+            await call.join_group_call(
+                chat_id,
+                stream,
+                stream_type=StreamType().local_stream  # or .pulse_stream based on your setup
+            )
+            return await aux.edit("🎧 Playing!")
+
+        if queues.is_empty(chat_id):
+            await call.change_stream(chat_id, stream)
+            return await aux.edit("🎧 Playing!")
+        else:
+            position = await queues.put(chat_id, file=file, type=stream_type)
+            return await aux.edit(f"🎶 Queued at position {position}")
+    except Exception as e:
+        print(f"[play_file ERROR]: {e}")
+        return await aux.edit("❌ Failed to stream audio/video.")
 
 
 # Audio Player
@@ -36,8 +52,8 @@ async def play_file(chat_id, file, stream_type, aux):
 async def audio_stream(client, message):
     chat_id = message.chat.id
     aux = await eor(message, "**🔄 Processing...**")
-
     type = "Audio"
+
     audio = (
         message.reply_to_message.audio or message.reply_to_message.voice
         if message.reply_to_message
@@ -58,7 +74,7 @@ async def audio_stream(client, message):
         await play_file(chat_id, file, type, aux)
 
     except Exception as e:
-        print(f"Audio Play Error: {e}")
+        print(f"[Audio Play ERROR]: {e}")
         return await aux.edit("❌ **Failed to process the request!**")
 
 
@@ -68,8 +84,8 @@ async def audio_stream(client, message):
 async def video_stream(client, message):
     chat_id = message.chat.id
     aux = await eor(message, "**🔄 Processing...**")
-
     type = "Video"
+
     video = (
         message.reply_to_message.video or message.reply_to_message.document
         if message.reply_to_message
@@ -90,7 +106,7 @@ async def video_stream(client, message):
         await play_file(chat_id, file, type, aux)
 
     except Exception as e:
-        print(f"Video Play Error: {e}")
+        print(f"[Video Play ERROR]: {e}")
         return await aux.edit("❌ **Failed to process the request!**")
 
 
