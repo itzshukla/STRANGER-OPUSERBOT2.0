@@ -5,8 +5,7 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton
 from typing import Union, List
 
-from ..clients.clients import app
-
+from ... import *
 
 class EqInlineKeyboardButton(InlineKeyboardButton):
     def __eq__(self, other):
@@ -87,5 +86,4 @@ def paginate_plugins(page_n, plugin_dict, prefix, chat=None):
         ]
 
     return pairs
-
 
