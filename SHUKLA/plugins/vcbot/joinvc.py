@@ -1,6 +1,6 @@
 from ... import *
-from ...modules.utilities import queues
-from ...modules.utilities.streams import * 
+from SHUKLA.modules.clients.func import *
+from SHUKLA.modules.clients.utils import *
 from pyrogram import Client, filters
 from pytgcalls import StreamType
 from pytgcalls.exceptions import AlreadyJoinedError, NoActiveGroupCall, TelegramServerError, GroupCallNotFound
