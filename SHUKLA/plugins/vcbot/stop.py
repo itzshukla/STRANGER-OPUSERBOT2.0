@@ -1,73 +1,45 @@
-from asyncio.queues import QueueEmpty
+from ... import *
+from SHUKLA.modules.clients.utils import *
+from SHUKLA.modules.mongo.streams import *
 from pyrogram import filters
+from pytgcalls.exceptions import GroupCallNotFound
+import logging
 
-from ... import app, eor, cdx, cdz, call
-from ...modules.helpers.wrapper import sudo_users_only
-from ...modules.mongo.streams import get_chat_id
-from ...modules.utilities import queues
+logger = logging.getLogger(__name__)
 
-
-# Stop stream (in group)
-@app.on_message(cdx(["stp"]) & ~filters.private)
-@sudo_users_only
-async def stop_stream(client, message):
+# End Stream (end)
+@app.on_message(commandz(["end"]) & SUDOERS)
+async def end_stream(client, message):
     chat_id = message.chat.id
-    if not call.is_running(chat_id):
-        return await eor(message, "**🤷 Nothing is currently streaming.**")
     try:
-        queues.clear(chat_id)
-    except QueueEmpty:
-        pass
-    await call.change_stream(chat_id)
-    await eor(message, "**⏹️ Stream stopped.**")
+        queue = await db.get_queue(chat_id)
+        if queue:
+            await db.remove_queue(chat_id)
+            await call.leave_group_call(chat_id)
+            await eor(message, "**⏹ Stream Stopped!**")
+        else:
+            await eor(message, "**❌ Nothing Playing!**")
+    except Exception as e:
+        logger.error(f"❌ Error in end_stream: {e}")
+        await eor(message, f"**Error:** `{e}`")
 
-
-# Stop stream (from anywhere)
-@app.on_message(cdz(["cstp"]))
-@sudo_users_only
-async def stop_stream_chat(client, message):
+# End Stream (cend)
+@app.on_message(cdz(["cend"]) & SUDOERS)
+async def close_stream_(client, message):
     user_id = message.from_user.id
     chat_id = await get_chat_id(user_id)
     if chat_id == 0:
-        return await eor(message, "**🥀 No VC chat set. Use `/setvc` first.**")
-    if not call.is_running(chat_id):
-        return await eor(message, "**🤷 Nothing is currently streaming.**")
+        return await eor(message, "**🥀 No Stream Chat Set❗**")
     try:
-        queues.clear(chat_id)
-    except QueueEmpty:
-        pass
-    await call.change_stream(chat_id)
-    await eor(message, "**⏹️ Stream stopped.**")
-
-
-# End stream (leave VC)
-@app.on_message(cdx(["end"]) & ~filters.private)
-@sudo_users_only
-async def close_stream(client, message):
-    chat_id = message.chat.id
-    if not call.is_running(chat_id):
-        return await eor(message, "**🤷 I’m not in VC currently.**")
-    try:
-        queues.clear(chat_id)
-    except QueueEmpty:
-        pass
-    await call.leave_group_call(chat_id)
-    await eor(message, "**✅ Left the VC. Stream ended.**")
-
-
-# End stream from anywhere
-@app.on_message(cdz(["cend"]))
-@sudo_users_only
-async def close_stream_chat(client, message):
-    user_id = message.from_user.id
-    chat_id = await get_chat_id(user_id)
-    if chat_id == 0:
-        return await eor(message, "**🥀 No VC chat set. Use `/setvc` first.**")
-    if not call.is_running(chat_id):
-        return await eor(message, "**🤷 I’m not in VC currently.**")
-    try:
-        queues.clear(chat_id)
-    except QueueEmpty:
-        pass
-    await call.leave_group_call(chat_id)
-    await eor(message, "**✅ Left the VC. Stream ended.**")
+        queue = await db.get_queue(chat_id)
+        if queue:
+            await db.remove_queue(chat_id)
+            await call.leave_group_call(chat_id)
+            await eor(message, "**⏹ Stream Stopped!**")
+        else:
+            await eor(message, "**❌ Nothing Playing!**")
+    except GroupCallNotFound:
+        await eor(message, "**❌ I am Not in VC!**")
+    except Exception as e:
+        logger.error(f"❌ Error in cend: {e}")
+        await eor(message, f"**Error:** `{e}`")
