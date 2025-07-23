@@ -1,64 +1,70 @@
+from ... import *
+from SHUKLA.modules.clients.utils import *
 from pyrogram import filters
-from ... import app, eor, cdx, cdz, call
-from ...modules.helpers.wrapper import sudo_users_only
-from ...modules.mongo.streams import get_chat_id
-from ...modules.utilities import queues
-from ...modules.utilities.streams import run_stream
+from pytgcalls.types.input_stream.quality import HighQualityAudio, HighQualityVideo
+from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
+from pytgcalls.exceptions import GroupCallNotFound
+import logging
 
+logger = logging.getLogger(__name__)
 
-@app.on_message(cdx(["skp", "skip"]) & ~filters.private)
-@sudo_users_only
+# Skip Stream (skip)
+@app.on_message(commandz(["skip"]) & SUDOERS)
 async def skip_stream(client, message):
     chat_id = message.chat.id
     try:
-        if not call.is_running(chat_id):
-            return await eor(message, "**I am Not in VC!**")
-
-        queues.task_done(chat_id)
-        if queues.is_empty(chat_id):
-            await call.leave(chat_id)
-            return await eor(message, "**Empty Queue, So\nLeaving VC!**")
-
-        next_track = queues.get(chat_id)
-        file = next_track["file"]
-        type = next_track["type"]
-        stream = await run_stream(file, type)
-        await call.change_stream(chat_id, stream)
-        return await eor(message, "**Stream Skipped!**")
-
+        queue = await db.get_queue(chat_id)
+        if queue:
+            queue.pop(0)
+            if not queue:
+                await call.leave_group_call(chat_id)
+                await db.remove_queue(chat_id)
+                await eor(message, "**⏹ Empty Queue, Stream Stopped!**")
+            else:
+                file = queue[0]["file"]
+                stream_type = queue[0]["type"]
+                song_name, duration = await get_media_info(file)
+                if stream_type == "Audio":
+                    stream = AudioPiped(file, HighQualityAudio())
+                elif stream_type == "Video":
+                    stream = AudioVideoPiped(file, HighQualityAudio(), HighQualityVideo())
+                await db.set_queue(chat_id, queue)
+                await call.change_stream(chat_id, stream)
+                await eor(message, f"**⏭ Skipped to Next Stream!**\n**Song:** {song_name}\n**Duration:** {duration}")
+        else:
+            await eor(message, "**❌ Nothing Playing!**")
     except Exception as e:
-        if "GroupCall" in str(e):
-            return await eor(message, "**I am Not in VC!**")
-        print(f"Skip error: {e}")
-        return await eor(message, "**❌ Failed to skip track!**")
+        logger.error(f"❌ Error in skip_stream: {e}")
+        await eor(message, f"**Error:** `{e}`")
 
-
-@app.on_message(cdz(["cskp", "cskip"]) & ~filters.private)
-@sudo_users_only
-async def skip_stream_custom(client, message):
+# Skip Stream (cskip)
+@app.on_message(cdz(["cskp", "cskip"]) & SUDOERS & ~filters.private)
+async def skip_stream_(client, message):
     user_id = message.from_user.id
     chat_id = await get_chat_id(user_id)
     if chat_id == 0:
         return await eor(message, "**🥀 No Stream Chat Set❗**")
-
     try:
-        if not call.is_running(chat_id):
-            return await eor(message, "**I am Not in VC!**")
-
-        queues.task_done(chat_id)
-        if queues.is_empty(chat_id):
-            await call.leave(chat_id)
-            return await eor(message, "**Empty Queue, So\nLeaving VC!**")
-
-        next_track = queues.get(chat_id)
-        file = next_track["file"]
-        type = next_track["type"]
-        stream = await run_stream(file, type)
-        await call.change_stream(chat_id, stream)
-        return await eor(message, "**Stream Skipped!**")
-
+        queue = await db.get_queue(chat_id)
+        if queue:
+            queue.pop(0)
+            if not queue:
+                await call.leave_group_call(chat_id)
+                await db.remove_queue(chat_id)
+                await eor(message, "**⏹ Empty Queue, Stream Stopped!**")
+            else:
+                file = queue[0]["file"]
+                stream_type = queue[0]["type"]
+                song_name, duration = await get_media_info(file)
+                if stream_type == "Audio":
+                    stream = AudioPiped(file, HighQualityAudio())
+                elif stream_type == "Video":
+                    stream = AudioVideoPiped(file, HighQualityAudio(), HighQualityVideo())
+                await db.set_queue(chat_id, queue)
+                await call.change_stream(chat_id, stream)
+                await eor(message, f"**⏭ Skipped to Next Stream!**\n**Song:** {song_name}\n**Duration:** {duration}")
+        else:
+            await eor(message, "**❌ Nothing Playing!**")
     except Exception as e:
-        if "GroupCall" in str(e):
-            return await eor(message, "**I am Not in VC!**")
-        print(f"Skip error: {e}")
-        return await eor(message, "**❌ Failed to skip track!**")
+        logger.error(f"❌ Error in cskip: {e}")
+        await eor(message, f"**Error:** `{e}`")
