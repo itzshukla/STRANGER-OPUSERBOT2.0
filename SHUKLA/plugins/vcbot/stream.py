@@ -24,7 +24,7 @@ async def play_file(chat_id, file, stream_type, aux):
         if not stream:
             return await aux.edit("❌ Could not generate stream.")
 
-        if chat_id not in call._call._calls:
+        if not call.is_connected(chat_id):
             await call.join_group_call(chat_id, stream)
             return await aux.edit("🎧 Playing!")
 
