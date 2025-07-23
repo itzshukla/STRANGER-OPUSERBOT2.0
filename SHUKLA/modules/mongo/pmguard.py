@@ -1,6 +1,6 @@
 from typing import Dict, List, Union
 
-from ... import console as vars
+from ..clients.vars import *
 from ..clients.clients import mongodb
 
 
@@ -15,7 +15,7 @@ pmlimitdb = mongodb.pmlimitdb
 async def get_pm_permit() -> bool:
     pm_permit = await pmguarddb.find_one()
     if not pm_permit:
-        return vars.PM_GUARD
+        return Config.PM_GUARD
     get_permit = pm_permit["pm_permit"]
     return get_permit
 
@@ -69,7 +69,7 @@ async def get_approved_users() -> list:
 async def get_pm_image() -> str:
     image = await pmimagedb.find_one()
     if not image:
-        return vars.USERBOT_PICTURE
+        return Config.USERBOT_PICTURE
     get_image = image["pm_image"]
     return get_image
 
@@ -88,7 +88,7 @@ async def set_pm_image(text: str) -> bool:
 async def get_pm_text() -> str:
     dm_text = await pmtextsdb.find_one()
     if not dm_text:
-        return vars.PM_GUARD_TEXT
+        return Config.PM_GUARD_TEXT
     get_text = dm_text["pm_text"]
     return get_text
 
@@ -108,7 +108,7 @@ async def set_pm_text(text: str) -> bool:
 async def get_pm_limit() -> int:
     limit = await pmlimitdb.find_one()
     if not limit:
-        return vars.PM_GUARD_LIMIT
+        return Config.PM_GUARD_LIMIT
     get_limit = limit["pm_limit"]
     return get_image
 
@@ -121,4 +121,3 @@ async def set_pm_limit(number: int) -> bool:
         upsert=True,
     )
     return True
-
