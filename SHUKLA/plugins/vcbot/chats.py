@@ -1,41 +1,34 @@
-from ... import app, eor, cdx
-from ...modules.mongo.streams import set_chat_id
-from ...modules.helpers.wrapper import sudo_users_only
-from pyrogram.types import Message
-from pyrogram.errors import PeerIdInvalid
+from ... import *
+from ...modules.mongo.streams import *
+from pyrogram import filters
+import logging
 
+logger = logging.getLogger(__name__)
 
-@app.on_message(cdx(["cset", "schat", "setchat"]))
-@sudo_users_only
-async def set_stream_chat(client, message: Message):
-    aux = await eor(message, "**Processing...**")
+# Set Stream Chat
+@app.on_message(cdx(["cset", "schat", "setchat"]) & SUDOERS)
+async def set_stream_chat(client, message):
+    aux = await eor(message, "**🔄 Processing ...**")
     user_id = message.from_user.id
-
     if len(message.command) < 2:
         chat_id = message.chat.id
     else:
-        raw_input = message.text.split(None, 1)[1]
         try:
-            if raw_input.startswith("@"):
-                username = raw_input[1:]
-                chat = await app.get_chat(username)
+            chat_id = message.text.split(None, 1)[1]
+            if "@" in chat_id:
+                chat_id = chat_id.replace("@", "")
+                chat = await app.get_chat(chat_id)
                 chat_id = chat.id
-            else:
-                chat_id = int(raw_input)
-        except (ValueError, PeerIdInvalid):
-            return await aux.edit("**⚠️ Invalid Chat ID or Username!**")
-        except Exception as e:
-            print(f"Chat fetch error: {e}")
-            return await aux.edit("**❌ Error fetching chat!**")
-
-    if len(str(chat_id)) < 10:  # Better than fixed length == 14
-        return await aux.edit("**⚠️ Invalid Chat ID Format!**")
-
+        except:
+            return await aux.edit("**❌ Error!**")
+    if len(str(chat_id)) != 14:
+        return await aux.edit("**Give Me Correct Chat ID!**")
     try:
-        already_set = await set_chat_id(user_id, int(chat_id))
-        if already_set:
-            return await aux.edit("✅ **Stream chat already set!**")
-        return await aux.edit("✅ **Stream chat saved successfully!**")
+        add_chat = await set_chat_id(user_id, int(chat_id))
+        if add_chat:
+            return await aux.edit("**Already Set.**")
+        return await aux.edit("**Chat ID Added.**")
     except Exception as e:
-        print(f"MongoDB Error: {e}")
-        await aux.edit("**❌ Failed to set chat ID. Try again.**")
+        logger.error(f"Error in set_stream_chat: {e}")
+        await aux.delete()
+        await eor(message, f"**Error:** `{e}`")
