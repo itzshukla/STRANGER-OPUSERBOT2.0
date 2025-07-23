@@ -1,145 +1,153 @@
-import os, sys
+import asyncio
 
 from pyrogram import Client
-from pyrogram import filters
+from pyrogram.types import ChatPrivileges
 from pytgcalls import PyTgCalls
 from motor.motor_asyncio import AsyncIOMotorClient
+from pyrogram.errors import BadRequest  # Import BadRequest for error handling
 
-from ...console import API_ID, API_HASH, STRING_SESSION
-from ...console import BOT_TOKEN, SESSION_STRING, LOGGER
-from ...console import MONGO_DB_URL, LOG_GROUP_ID, SUDOERS
+from ..clients.vars import Config
+from ...console import LOGGER
 
-
-def async_config():
-    LOGGER.info("Checking Variables ...")
-    if not API_ID:
-        LOGGER.info("'API_ID' - Not Found !")
-        sys.exit()
-    if not API_HASH:
-        LOGGER.info("'API_HASH' - Not Found !")
-        sys.exit()
-    if not BOT_TOKEN:
-        LOGGER.info("'BOT_TOKEN' - Not Found !")
-        sys.exit()
-    if not STRING_SESSION:
-        LOGGER.info("'STRING_SESSION' - Not Found !")
-        sys.exit()
-    if not MONGO_DB_URL:
-        LOGGER.info("'MONGO_DB_URL' - Not Found !")
-        sys.exit()
-    if not LOG_GROUP_ID:
-        LOGGER.info("'LOG_GROUP_ID' - Not Found !")
-        sys.exit()
-    LOGGER.info("All Required Variables Collected.")
-
-
-def async_dirs():
-    LOGGER.info("Initializing Directories ...")
-    if "downloads" not in os.listdir():
-        os.mkdir("downloads")
-    if "cache" not in os.listdir():
-        os.mkdir("cache")
-    
-    for file in os.listdir():
-        if file.endswith(".session"):
-            os.remove(file)
-    for file in os.listdir():
-        if file.endswith(".session-journal"):
-            os.remove(file)
-    LOGGER.info("Directories Initialized.")
-
-async_dirs()
-    
-
-app = Client(
-    name = "SHUKLA",
-    api_id = API_ID,
-    api_hash = API_HASH,
-    session_string = STRING_SESSION,
+ass_power = ChatPrivileges(
+    can_change_info=True,
+    can_delete_messages=True,
+    can_restrict_members=True,
+    can_pin_messages=True,
+    can_manage_video_chats=True,
+    can_promote_members=True,    
+    can_invite_users=True
 )
 
-ass = Client(
-    name = "ShuklaPlayer",
-    api_id = API_ID,
-    api_hash = API_HASH,
-    session_string = SESSION_STRING,
+bot_power = ChatPrivileges(
+    can_change_info=True,
+    can_delete_messages=True,
+    can_restrict_members=True,
+    can_pin_messages=True,
+    can_manage_video_chats=True,
+    can_promote_members=True,    
+    can_invite_users=True
 )
 
-bot = Client(
-    name = "ShuklaSUPPORT",
-    api_id = API_ID,
-    api_hash = API_HASH,
-    bot_token = BOT_TOKEN,
-)
+try:
+    LOGGER.info("Connecting To Mongo Database ...")
+    MONGO_DB_URL = Config.MONGO_DATABASE
+    _mongo_async_ = AsyncIOMotorClient(MONGO_DB_URL)
+    mongodb = _mongo_async_.Genius
+    LOGGER.info("Succesfully Connected.")
+except Exception as e:
+    print(f"Error: {e}")
+    LOGGER.error("Failed To Connect To Your Mongo Database.")
+    exit()
 
+class Shukla(Client, PyTgCalls):
+    def __init__(self):
+        self.app = Client(
+            name="ShuklaUserbot",
+            api_id=Config.API_ID,
+            api_hash=Config.API_HASH,
+            session_string=Config.STRING_SESSION,
+        )
+        self.ass = Client(
+            name="ShuklaPlayer",
+            api_id=Config.API_ID,
+            api_hash=Config.API_HASH,
+            session_string=Config.SESSION_STRING,
+        )
+        self.bot = Client(
+            name="ShuklaServer",
+            api_id=Config.API_ID,
+            api_hash=Config.API_HASH,
+            bot_token=Config.BOT_TOKEN,
+        )
+        if Config.SESSION_STRING:
+            self.call = PyTgCalls(self.ass)
+        else:
+            self.call = PyTgCalls(self.app)
 
-if not SESSION_STRING:
-    call = PyTgCalls(app)
-else:
-    call = PyTgCalls(ass)
-
-
-def mongodbase():
-    global mongodb
-    try:
-        LOGGER.info("Connecting To Your Database ...")
-        async_client = AsyncIOMotorClient
-        mongobase = async_client(MONGO_DB_URL)
-        mongodb = mongobase.SHUKLA
-        LOGGER.info("Conected To Your Database.")
-    except:
-        LOGGER.error("Failed To Connect, Please Change Your Mongo Database !")
-        sys.exit()
-
-mongodbase()
-
-
-async def sudo_users():
-    sudoersdb = mongodb.sudoers
-    sudoers = await sudoersdb.find_one({"sudo": "sudo"})
-    sudoers = [] if not sudoers else sudoers["sudoers"]
-    if sudoers:
-        for user_id in sudoers:
-            SUDOERS.append(int(user_id))
-    LOGGER.info(f"Sudo Users Loaded.")
-    
-
-async def run_async_clients():
-    LOGGER.info("Starting Userbot ...")
-    await app.start()
-    LOGGER.info("Userbot Started.")
-    try:
-        await app.send_message(LOG_GROUP_ID, "**sʜᴜᴋʟᴀ ᴜsᴇʀʙᴏᴛ ɪs ᴀʟɪᴠᴇ**")
-    except:
-        pass
-    try:
-        await app.join_chat("MASTIWITHFRIENDSXD")
-        await app.join_chat("SHIVANSH474")
-    except:
-        pass
-    if SESSION_STRING:
-        LOGGER.info("Starting Assistant ...")
-        await ass.start()
-        LOGGER.info("Assistant Started.")
+    async def start(self):
+        LOGGER.info("Starting Userbot")
+        await self.app.start()
+        self.app.name = self.app.me.first_name + "" + (self.app.me.last_name or "")
+        self.app.username = self.app.me.username if self.app.me.username else self.app.me.mention
+        self.app.mention = self.app.me.mention
+        self.app.id = self.app.me.id
+        if self.app.id not in Config.SUDOERS:
+            Config.SUDOERS.add(int(self.app.id))
         try:
-            await ass.send_message(LOG_GROUP_ID, "**Assistant Started.**")
+            await self.app.join_chat("Shivansh474")
+            await self.app.join_chat("mastiwithfriendsxd")
+            await self.app.join_chat("strangerassociation")
+        except:
+            pass
+        await self.app.send_message(Config.LOG_GROUP_ID, "**Userbot Started**")
+        LOGGER.info(f"Userbot Started as {self.app.name}")
+        LOGGER.info("Starting PyTgCalls")
+        if Config.SESSION_STRING:
+            await self.ass.start()
+            self.ass.name = self.ass.me.first_name + "" + (self.ass.me.last_name or "")
+            self.ass.username = self.ass.me.username
+            self.ass.mention = self.ass.me.mention
+            self.ass.id = self.ass.me.id
+            try:
+                await self.ass.join_chat("Shivansh474")
+                await self.ass.join_chat("mastiwithfriendsxd")
+                await self.ass.join_chat("strangerassociation")
+            except:
+                pass
+            try:
+                await self.ass.send_message(Config.LOG_GROUP_ID, "**Vc Assistant Started.**")
+            except:
+                pass
+            LOGGER.info(f"Vc Assistant Started as {self.ass.name}")
+        await self.call.start()
+        LOGGER.info("Starting Helperbot")
+        await self.bot.start()
+        self.bot.name = self.bot.me.first_name + "" + (self.bot.me.last_name or "")
+        self.bot.username = self.bot.me.username
+        self.bot.mention = self.bot.me.mention
+        self.bot.id = self.bot.me.id
+        try:
+            await self.app.send_message(f"@{self.bot.username}", "/start")
+            try:
+                await self.app.promote_chat_member(Config.LOG_GROUP_ID, self.bot.id, bot_power)
+            except BadRequest as e:
+                if "BOTS_TOO_MUCH" in str(e):
+                    LOGGER.warning(f"Failed to promote bot in log group: Too many bots in chat (ID: {Config.LOG_GROUP_ID}).")
+                else:
+                    LOGGER.error(f"Failed to promote bot: {e}")
+        except Exception as e:
+            LOGGER.info(e)
+            pass
+        try:
+            await asyncio.sleep(1)
+            await self.app.send_message(f"@botfather", "/setinline")
+            await asyncio.sleep(1)
+            await self.app.send_message(f"@botfather", f"@{self.bot.username}")
+            await asyncio.sleep(1)
+            await self.app.send_message(f"@botfather", "🥀 𝐒𝐡𝐮𝐤𝐥𝐚 𝐔𝐬𝐞𝐫𝐁𝐨𝐭 ✨")
         except:
             pass
         try:
-            await app.join_chat("MASTIWITHFRIENDSXD")
-            await app.join_chat("SHIVANSH474")
+            await self.bot.send_message(Config.LOG_GROUP_ID, "**Helper Bot Started.**")
         except:
-            pass
-    LOGGER.info("Starting Helper Robot ...")
-    await bot.start()
-    LOGGER.info("Helper Robot Started.")
-    try:
-        await bot.send_message(LOG_GROUP_ID, "**sʜᴜᴋʟᴀ ʀᴏʙᴏᴛ ɪs ᴀʟɪᴠᴇ.**")
-    except:
-        pass
-    LOGGER.info("Starting PyTgCalls Client...")
-    await call.start()
-    LOGGER.info("PyTgCalls Client Started.")
-    await sudo_users()
-    
-    
+            LOGGER.error("Please Promote Bot in Your Log Group")
+            exit()
+        LOGGER.info(f"Helperbot Started as {self.bot.name}")
+        if self.app.id not in Config.SUDOERS:
+            Config.SUDOERS.add(int(self.app.id))
+        sudoersdb = mongodb.sudoers
+        sudoers = await sudoersdb.find_one({"sudo": "sudo"})
+        sudoers = [] if not sudoers else sudoers["sudoers"]
+        if self.app.id not in sudoers:
+            sudoers.append(self.app.id)
+            await sudoersdb.update_one(
+                {"sudo": "sudo"},
+                {"$set": {"sudoers": sudoers}},
+                upsert=True,
+            )
+        if sudoers:
+            for user_id in sudoers:
+                if user_id not in Config.SUDOERS:
+                    Config.SUDOERS.add(user_id)
+        LOGGER.info(f"All Sudoers Loaded.")
