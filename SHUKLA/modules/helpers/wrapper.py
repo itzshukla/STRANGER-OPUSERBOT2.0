@@ -1,8 +1,8 @@
 from pyrogram.types import *
 from traceback import format_exc
 
-from ...console import SUDOERS
-from ..clients.clients import app, bot
+from ... import *
+from ..clients.vars import Config
 
 def super_user_only(mystic):
     async def wrapper(client, message):
@@ -21,12 +21,12 @@ def sudo_users_only(mystic):
     async def wrapper(client, message):
         try:
             if (message.from_user.is_self or
-               message.from_user.id in SUDOERS
+               message.from_user.id in Config.SUDOERS
             ):
                 return await mystic(client, message)
         except:
             if (message.outgoing or
-               message.from_user.id in SUDOERS
+               message.from_user.id in Config.SUDOERS
             ):
                 return await mystic(client, message)
             
@@ -35,7 +35,7 @@ def sudo_users_only(mystic):
 
 def cb_wrapper(func):
     async def wrapper(bot, cb):
-        sudousers = SUDOERS
+        sudousers = Config.SUDOERS
         if (cb.from_user.id != app.me.id and
             cb.from_user.id not in sudousers
         ):
@@ -59,7 +59,7 @@ def cb_wrapper(func):
 def inline_wrapper(func):
     from ... import __version__
     async def wrapper(bot, query):
-        sudousers = SUDOERS
+        sudousers = Config.SUDOERS
         if (query.from_user.id != app.me.id and
             query.from_user.id not in sudousers
         ):
@@ -111,4 +111,3 @@ def inline_wrapper(func):
            return await func(bot, query)
 
     return wrapper
-
