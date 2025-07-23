@@ -1,5 +1,4 @@
-from ... import app, cdx, eor, super_user_only
-from ...console import SUDOERS
+from ... import app, cdx, eor, super_user_only, SUDOERS
 from ...modules.mongo.sudoers import add_sudo, del_sudo
 
 
