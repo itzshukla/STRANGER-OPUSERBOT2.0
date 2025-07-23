@@ -13,12 +13,12 @@
   "env": {
     "API_ID": {
       "description": "Enter your API ID from https://my.telegram.org",
-      "value": "29308061",
+      "value": "",
       "required": true
     },
     "API_HASH": {
       "description": "Enter your API HASH from https://my.telegram.org",
-      "value": "462de3dfc98fd938ef9c6ee31a72d099",
+      "value": "",
       "required": true
     },
     "BOT_TOKEN": {
@@ -26,34 +26,29 @@
       "value": "",
       "required": true
     },
-    "SUDO_USERS": {
-      "description": "Telegram user ID(s) who have full access",
-      "value": "6566179661",
-      "required": true
-    },
-    "OWNER_ID": {
-      "description": "Your Telegram user ID",
-      "value": "6566179661",
-      "required": true
-    },
-    "OWNER_USERNAME": {
-      "description": "Your Telegram username",
-      "value": "SHIVANSH39",
-      "required": true
-    },
     "STRING_SESSION": {
       "description": "Your Pyrogram v2 string session",
       "value": "",
       "required": true
     },
-    "MONGO_DB_URL": {
-      "description": "MongoDB connection string",
-      "value": "mongodb+srv://SHASHANK:STRANGER@shashank.uj7lold.mongodb.net/?retryWrites=true&w=majority",
+    "OWNER_ID": {
+      "description": "Your Telegram user ID",
+      "value": "",
       "required": true
     },
-    "LOG_GROUP_ID": {
-      "description": "Your private log group ID",
-      "value": "-1002018556839",
+    "MONGO_DATABASE": {
+      "description": "MongoDB connection URI",
+      "value": "",
+      "required": true
+    },
+    "OWNER_USERNAME": {
+      "description": "Your Telegram username",
+      "value": "",
+      "required": true
+    },
+    "SUDO_USERS": {
+      "description": "User ID(s) with sudo access (space-separated if multiple)",
+      "value": "",
       "required": true
     }
   },
