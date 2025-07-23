@@ -1,6 +1,4 @@
 from pyrogram import filters
-from pytgcalls.types import StreamType
-
 from ... import app, eor, cdx, cdz, call
 from ...modules.helpers.wrapper import sudo_users_only
 from ...modules.mongo.streams import get_chat_id
@@ -26,13 +24,8 @@ async def play_file(chat_id, file, stream_type, aux):
         if not stream:
             return await aux.edit("❌ Could not generate stream.")
 
-        # Check if already in VC
         if chat_id not in call._call._calls:
-            await call.join_group_call(
-                chat_id,
-                stream,
-                stream_type=StreamType().local_stream  # or .pulse_stream based on your setup
-            )
+            await call.join_group_call(chat_id, stream)
             return await aux.edit("🎧 Playing!")
 
         if queues.is_empty(chat_id):
@@ -52,7 +45,7 @@ async def play_file(chat_id, file, stream_type, aux):
 async def audio_stream(client, message):
     chat_id = message.chat.id
     aux = await eor(message, "**🔄 Processing...**")
-    type = "Audio"
+    stream_type = "Audio"
 
     audio = (
         message.reply_to_message.audio or message.reply_to_message.voice
@@ -69,9 +62,9 @@ async def audio_stream(client, message):
                 return await aux.edit("**🥀 Provide a song name or link to play.**")
             query = extract_query(message.text)
             results = await get_result(query)
-            file = await get_stream(results[0], type)
+            file = await get_stream(results[0], stream_type)
 
-        await play_file(chat_id, file, type, aux)
+        await play_file(chat_id, file, stream_type, aux)
 
     except Exception as e:
         print(f"[Audio Play ERROR]: {e}")
@@ -84,7 +77,7 @@ async def audio_stream(client, message):
 async def video_stream(client, message):
     chat_id = message.chat.id
     aux = await eor(message, "**🔄 Processing...**")
-    type = "Video"
+    stream_type = "Video"
 
     video = (
         message.reply_to_message.video or message.reply_to_message.document
@@ -101,9 +94,9 @@ async def video_stream(client, message):
                 return await aux.edit("**🥀 Provide a video name or link to play.**")
             query = extract_query(message.text)
             results = await get_result(query)
-            file = await get_stream(results[0], type)
+            file = await get_stream(results[0], stream_type)
 
-        await play_file(chat_id, file, type, aux)
+        await play_file(chat_id, file, stream_type, aux)
 
     except Exception as e:
         print(f"[Video Play ERROR]: {e}")
