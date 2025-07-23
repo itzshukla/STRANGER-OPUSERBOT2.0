@@ -1,6 +1,7 @@
 import asyncio
 
 from ... import *
+from ... import PLUGINS as plugs
 from .buttons import *
 from .wrapper import *
 from pyrogram.types import *
