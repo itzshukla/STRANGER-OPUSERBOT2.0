@@ -1,10 +1,12 @@
-from ... import console
+from .vars import Config
 from pyrogram import filters
-from typing import Union, List
+from pyrogram.types import Message
+from pytgcalls.types import Update
+from typing import Union, List, Dict, Optional
 
 
 def commandx(commands: Union[str, List[str]]):
-    return filters.command(commands, console.COMMAND_PREFIXES)
+    return filters.command(commands, Config.COMMAND_PREFIXES)
 
 def commandz(commands: Union[str, List[str]]):
-    return filters.command(commands, console.COMMAND_HANDLERS)
+    return filters.command(commands, Config.COMMAND_HANDLERS)
