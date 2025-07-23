@@ -1,14 +1,12 @@
 import asyncio, random
-
 from pyrogram import filters
 from pyrogram.enums import *
 from pyrogram.types import *
-
-from .clients import app, bot
+from ... import app
+from ..clients.vars import *
 from ..mongo.pmguard import *
 from ..mongo.raidzone import *
 from ..strings import raidzone
-from ... import console as vars
 
 
 async def run_async_enums():
@@ -23,8 +21,8 @@ async def run_async_enums():
         )
     )
     async def all_events(client, message):
-        check = vars.OLD_MSG
-        flood = vars.FLOODXD
+        check = Config.OLD_MSG
+        flood = Config.FLOODXD
         user_id = message.from_user.id
         pm_permit = await get_pm_permit()
         permit_image = await get_pm_image()
@@ -109,7 +107,6 @@ async def run_async_enums():
             except Exception as e:
                 # print(f"Error: {e}")
                 pass
-
 
 
 
