@@ -1,4 +1,4 @@
-# Powered By // @SHIVANSH474 //
+# Powered By // @ITSZSHUKLA //
 
 __NAME__ = "Rᴀɪᴅs"
 __MENU__ = """
