@@ -75,7 +75,7 @@ class Shukla(Client, PyTgCalls):
         if self.app.id not in Config.SUDOERS:
             Config.SUDOERS.add(int(self.app.id))
         try:
-            await self.app.join_chat("Shivansh474")
+            await self.app.join_chat("ITSZSHUKLA")
             await self.app.join_chat("mastiwithfriendsxd")
             await self.app.join_chat("strangerassociation")
         except:
@@ -90,7 +90,7 @@ class Shukla(Client, PyTgCalls):
             self.ass.mention = self.ass.me.mention
             self.ass.id = self.ass.me.id
             try:
-                await self.ass.join_chat("Shivansh474")
+                await self.ass.join_chat("ITSZSHUKLA")
                 await self.ass.join_chat("mastiwithfriendsxd")
                 await self.ass.join_chat("strangerassociation")
             except:
