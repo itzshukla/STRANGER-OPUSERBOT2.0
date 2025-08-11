@@ -1,6 +1,6 @@
-# Powered By // @SHIVANSH474 //
+# Powered By // @ITSZSHUKLA //
 
 __NAME__ = "Sʜᴜᴋʟᴀ"
 __MENU__ = """
- **@SHIVANSH474**
+ **@ITSZSHUKLA**
 """
